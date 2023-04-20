@@ -1,48 +1,34 @@
 #include "main.h"
 
 /**
- *is_separator - checks if a character is a separator
- *@c: the character to check
- *Return: 1 if true otherwise returns 0
+ * cap_string - capitalizes everey word of a string
+ * @s: string to modify
+ *
+ * Return: the resulting string
  */
-
-int is_separator(int c)
-{
-	return (c == 32 || c == '\n' || c == ',' || c == ';' || c == '!'
-			|| c == '?' || c == '"' || c == '(' || c == ')'
-			|| c == '{' || c == '}' || c == '\t' || c == '.');
-}
-
-/**
- *is_lower - checks if a character is lower case
- *@c: the character in hand
- *Return: 1 if true else 0
- */
-
-int	is_lower(int c)
-{
-	return (c >= 'a' && c <= 'z');
-}
-
-/**
- *cap_string - capitalizes all words of the string
- *@s: the string to capitalize
- *Return: return the capitalized string
- */
-
-
 char *cap_string(char *s)
 {
-	int i = 0;
+	int i, j;
 
-	if (s[i] && is_lower(s[i]))
-		s[i] -= 32;
-	i++;
-	while (s[i])
+	char spe[13] = {' ', '\t', '\n', ',', ';', '.',
+		'!', '?', '"', '(', ')', '{', '}'};
+
+	for (i = 0; s[i] != '\0'; i++)
 	{
-		if (is_separator(s[i]) && s[i + 1] && is_lower(s[i + 1]))
-			s[i + 1] -= 32;
-		i++;
+		if (i == 0 && s[i] >= 'a' && s[i] <= 'z')
+			s[i] -= 32;
+
+		for (j = 0; j < 13; j++)
+		{
+			if (s[i] == spe[j])
+			{
+				if (s[i + 1] >= 'a' && s[i + 1] <= 'z')
+				{
+					s[i + 1] -= 32;
+				}
+			}
+		}
 	}
+
 	return (s);
 }

@@ -1,32 +1,28 @@
 #include <stdio.h>
+
 /**
-  *main - entry point
-  *Description: print lowercase alphabet
-  *Return: always 0
-  */
+ * main - prints all possible different combinations of two digits
+ * Return: ALways 0 (Success)
+ */
 int main(void)
 {
-	int i = 0;
-	int j = 0;
+	int n, m;
 
-	while (i <= 9)
+	for (n = 48; n <= 56; n++)
 	{
-		j = 0;
-		while (j <= 9)
+		for (m = 49; m <= 57; m++)
 		{
-			if (j > i)
+			if (m > n)
 			{
-				putchar(i + '0');
-				putchar(j + '0');
-				if (i != 8 || j != 9)
+				putchar(n);
+				putchar(m);
+				if (n != 56 || m != 57)
 				{
 					putchar(',');
 					putchar(' ');
 				}
 			}
-			j++;
 		}
-		i++;
 	}
 	putchar('\n');
 	return (0);

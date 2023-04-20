@@ -1,20 +1,21 @@
+#include <stdlib.h>
 #include "main.h"
 
 /**
- *free_grid - free memory allocated by a 2d array
- *@grid: the 2d array
- *@height: number of lines
- *Return: void returns nothing
+ * free_grid - frees the memory allocate for the grid
+ * created by alloc_grid()
+ * @grid: grid to free
+ * @height: height of the grid
  */
-
 void free_grid(int **grid, int height)
 {
-	int i = 0;
+	int i;
 
-	while (i < height)
-	{
+	if (grid == NULL || height == 0)
+		return;
+
+	for (i = 0; i < height; i++)
 		free(grid[i]);
-		i++;
-	}
+
 	free(grid);
 }

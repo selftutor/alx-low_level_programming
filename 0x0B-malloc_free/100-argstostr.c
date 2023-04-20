@@ -1,64 +1,50 @@
 #include "main.h"
-
+#include <stdlib.h>
 /**
- *_strlen - calculates the size of the string
- *@s: the string in hand
- *Return: the number of chars in the string
- */
-
-unsigned int _strlen(char *s)
-{
-	unsigned int i = 0;
-
-	while (s[i])
-		i++;
-	return (i);
-}
-
-/**
- *argstostr - concatenates args into one string
- *@ac: the number of arguments
- *@av: the array of arguments
- *Return: returns the string with all args
- */
-
+  *argstostr - concatenates all arguments of the program.
+  *@ac: argument count.
+  *@av: pointer to array of size ac.
+  *Return: NULL if ac == 0 or av == null, Pointer to new string.
+  *NULL on fail.
+  */
 char *argstostr(int ac, char **av)
 {
-	char *str;
-	unsigned int	 size = ac + 1;
-	int	i = 0;
-	int j = 0;
-	int k = 0;
+	int i, j, k, size;
+	char *arg;
 
+	size = 0;
+	k = 0;
 	if (ac == 0 || av == NULL)
 		return (NULL);
+	i = 0;
 	while (i < ac)
 	{
-		size += _strlen(av[i]);
-		i++;
-	}
-	i = 0;
-	str = malloc(sizeof(char) * size);
-	if (!str)
-		return (NULL);
-	while (av[k])
-	{
 		j = 0;
-		while (av[k][j])
+		while (av[i][j])
 		{
-			if (k == 0)
-				str[j] = av[k][j];
-			else
-				str[i + j] = av[k][j];
+			size++;
 			j++;
 		}
-		if (k == 0)
-			str[j] = '\n';
-		else
-			str[i + j] = '\n';
-		i = i + j + 1;
-		k++;
+		size++;
+		i++;
 	}
-	str[i] = '\0';
-	return (str);
+	arg = malloc((sizeof(char) * size) + 1);
+	if (arg == NULL)
+		return (NULL);
+	i = 0;
+	while (i < ac)
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			arg[k] = av[i][j];
+			j++;
+			k++;
+		}
+		arg[k] = '\n';
+		k++;
+		i++;
+	}
+	arg[k] = '\0';
+	return (arg);
 }

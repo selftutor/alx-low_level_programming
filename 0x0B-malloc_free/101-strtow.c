@@ -1,90 +1,77 @@
+#include <stdlib.h>
 #include "main.h"
-#include <string.h>
 
 /**
- *count_words - counts the words of a string
- *@s: the string in hand
- *Return: the number of words
+ * count_word - helper function to count the number of words in a string
+ * @s: string to evaluate
+ *
+ * Return: number of words
  */
-
-int	count_words(char *s)
+int count_word(char *s)
 {
-	int slen = 0;
-	int i = 0;
-	int counter = 0;
-	int found = 0;
+	int flag, c, w;
 
-	while (s[slen])
-		slen++;
-	while (i <= slen)
+	flag = 0;
+	w = 0;
+
+	for (c = 0; s[c] != '\0'; c++)
 	{
-		if (s[i] != ' ' && !found)
-			found = 1;
-		else if ((s[i] == ' ' || !s[i]) && found)
+		if (s[c] == ' ')
+			flag = 0;
+		else if (flag == 0)
 		{
-			found = 0;
-			counter++;
+			flag = 1;
+			w++;
 		}
-		i++;
 	}
-	return (counter);
+
+	return (w);
 }
-
 /**
- *get_first_word - gets the first word of a string
- *@s: the string in hand
- *Return: the first word
+ * **strtow - splits a string into words
+ * @str: string to split
+ *
+ * Return: pointer to an array of strings (Success)
+ * or NULL (Error)
  */
-
-char *get_first_word(char *s)
-{
-	int size = 0;
-	int i = 0;
-	char *word;
-
-	while (s[size] && s[size] != ' ')
-		size++;
-	word = malloc(sizeof(char) * (size + 1));
-	if (!word)
-		return (NULL);
-	while (s[i] && s[i] != 32)
-	{
-		word[i] = s[i];
-		i++;
-	}
-	word[i] = '\0';
-	return (word);
-}
-
-/**
- * strtow - string to words
- *@str: the string in hand
- *Return: a an array of words in the string
- */
-
 char **strtow(char *str)
 {
-	int count = 0;
-	int size = count_words(str) + 1;
-	char *word;
-	char **words;
+	char **matrix, *tmp;
+	int i, k = 0, len = 0, words, c = 0, start, end;
 
-	if (!str || !str[0])
+	while (*(str + len))
+		len++;
+	words = count_word(str);
+	if (words == 0)
 		return (NULL);
-	words = (char **) malloc(sizeof(char *) * size);
-	if (!words)
+
+	matrix = (char **) malloc(sizeof(char *) * (words + 1));
+	if (matrix == NULL)
 		return (NULL);
-	while (*str)
+
+	for (i = 0; i <= len; i++)
 	{
-		while (*str && *str == 32)
-			str++;
-		word = get_first_word(str);
-		if (!word)
-			return (NULL);
-		words[count] = word;
-		count++;
-		str += strlen(word);
+		if (str[i] == ' ' || str[i] == '\0')
+		{
+			if (c)
+			{
+				end = i;
+				tmp = (char *) malloc(sizeof(char) * (c + 1));
+				if (tmp == NULL)
+					return (NULL);
+				while (start < end)
+					*tmp++ = str[start++];
+				*tmp = '\0';
+				matrix[k] = tmp - c;
+				k++;
+				c = 0;
+			}
+		}
+		else if (c++ == 0)
+			start = i;
 	}
-	words[count] = NULL;
-	return (words);
+
+	matrix[k] = NULL;
+
+	return (matrix);
 }
